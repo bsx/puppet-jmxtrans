@@ -14,10 +14,11 @@ objects = [
     }
   }
 ]
- 
+
 
 describe 'jmxtrans::metrics' do
   let(:title)   { service }
+  let(:facts)   { {:osfamily => 'RedHat'} }
   let(:params) { { :objects => objects,
                    :jmx     => jmx } }
 
@@ -28,6 +29,7 @@ end
 
 describe 'jmxtrans::metrics::jvm' do
   let(:title) { service }
+  let(:facts) { {:osfamily => 'RedHat'} }
   let(:params) { { :jmx => jmx,
                    :group_prefix => "#{service}." } }
 

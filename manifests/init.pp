@@ -13,6 +13,18 @@ class jmxtrans(
     $json_dir     = '/etc/jmxtrans',
 )
 {
+    case $::osfamily {
+        'debian': {
+            $_sysconfig_dir = '/etc/default'
+        }
+        /RedHat|CentOS/: {
+            $_sysconfig_dir = '/etc/sysconfig'
+        }
+        default: {
+            fail("unsupported osfamily: ${::osfamily}")
+        }
+    }
+
     package { 'jmxtrans':
         ensure  => 'installed',
     }
@@ -21,7 +33,7 @@ class jmxtrans(
         ensure => 'directory',
     }
 
-    file { '/etc/default/jmxtrans':
+    file { "${_sysconfig_dir}/jmxtrans":
         content => template('jmxtrans/jmxtrans.default.erb')
     }
 
@@ -29,6 +41,6 @@ class jmxtrans(
         ensure    => 'running',
         enable    => true,
         require   => Package['jmxtrans'],
-        subscribe => File['/etc/default/jmxtrans'],
+        subscribe => File["${_sysconfig_dir}/jmxtrans"],
     }
 }
