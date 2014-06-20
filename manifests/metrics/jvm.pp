@@ -6,6 +6,9 @@
 #
 # == Parameters
 # $jmx            - host:port of JMX to query.  Default: $title
+# $jmx_alias      - Server alias name.              Optional.
+# $jmx_username   - JMX username (if there is one)  Optional.
+# $jmx_password   - JMX password (if there is one)  Optional.
 # $ganglia        - $ganglia parameter to pass to jmxtrans::metrics
 # $graphite       - $graphite parameter to pass to jmxtrans::metrics
 # $outfile        - $outfile parameter to pass to jmxtrans::metrics
@@ -13,6 +16,9 @@
 #
 define jmxtrans::metrics::jvm(
     $jmx          = $title,
+    $jmx_alias    = undef,
+    $jmx_username = undef,
+    $jmx_password = undef,
     $ganglia      = undef,
     $graphite     = undef,
     $outfile      = undef,
@@ -21,6 +27,9 @@ define jmxtrans::metrics::jvm(
 {
     jmxtrans::metrics { "${title}-jvm-metrics":
         jmx                  => $jmx,
+        jmx_alias            => $jmx_alias,
+        jmx_username         => $jmx_username,
+        jmx_password         => $jmx_password,
         outfile              => $outfile,
         ganglia              => $ganglia,
         ganglia_group_name   => "${group_prefix}jvm_memory",
